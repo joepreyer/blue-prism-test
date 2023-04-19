@@ -10,12 +10,19 @@ Clone this repository to your computer.
 
 Navigate to the project directory using the terminal or command line interface.
 
-Install dependencies by running the command npm install.
+Install dependencies by running the command 
 
-Start the development server using the command npm start.
+```npm install```.
 
+Start the development server using the command 
 
-This app also requires a backend server to be running in order to retrieve and manage data. The base URL for the server is set to 'http://localhost:3000' in the code. You can modify this to connect to your own backend server.
+```npm start```.
+
+You can run all tests using 
+
+``npm run test``
+
+This app also requires a backend server to be running in order to retrieve and manage data. This is a mock backend service provided by Blue Prism. The base URL for the server is set to 'http://localhost:3000' in the code. You can modify this to connect to your own backend server.
 
 
 ## Usage
@@ -32,8 +39,3 @@ To retire or unretire a schedule, click the corresponding button on a schedule b
 To view logs for a specific date, select the date from the date picker located in the header.
 
 To add, edit, or delete a log, use the buttons on each log box.
-
-
-## Contributing
-
-Feel free to contribute to this project by creating a pull request.
