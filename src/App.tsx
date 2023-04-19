@@ -6,6 +6,7 @@ import { deleteSchedule, retireSchedule, unRetireSchedule } from './api/schedule
 import Button from './components/atoms/button';
 
 function App() {
+  const [loading, setLoading] = useState<boolean>(true);
   const [schedules, setSchedules] = useState<Array<Schedule>>([]);
   const [allLogs, setAllLogs] = useState<Array<Log>>([]);
   const [filteredLogs, setFilteredLogs] = useState<Array<Log>>([]);
@@ -13,16 +14,22 @@ function App() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const schedulesResponse = await fetch('http://localhost:3000/schedules')
-      const schedulesJson = await schedulesResponse.json()
-      setSchedules(schedulesJson)
+      try {
+        const schedulesResponse = await fetch('http://localhost:3000/schedules')
+        const schedulesJson = await schedulesResponse.json()
+        setSchedules(schedulesJson)
 
-      const logsResponse = await fetch('http://localhost:3000/scheduleLogs')
-      const logsJson = await logsResponse.json()
-      setAllLogs(logsJson)
+        const logsResponse = await fetch('http://localhost:3000/scheduleLogs')
+        const logsJson = await logsResponse.json()
+        setAllLogs(logsJson)
+      }
+      catch (error) {
+        console.error("Error fetching data\n", error)
+        setLoading(false)
+      }
     }
 
-    fetchData()
+    fetchData().then(() => setLoading(false))
   }, []);
 
   const onRetireSchedule = async (id: number) => {
@@ -69,10 +76,14 @@ function App() {
     }
   }
 
+  if (loading) {
+    return <div>Loading...</div>
+  }
+
   return (
     <div className="h-screen w-full overflow-hidden px-4">
       <h1 className={`text-4xl font-bold my-4 sm:block ${!!selectedSchedule && 'hidden'}`}>Schedules</h1>
-      <div className="grid grid-cols-1 sm:grid-cols-[30%_70%] h-full w-full">
+      {!!schedules.length ? <div className="grid grid-cols-1 sm:grid-cols-[30%_70%] h-full w-full">
         <ScheduleList
           className={`flex sm:flex flex-col h-full overflow-y-scroll gap-4 mb-10 sm:pb-20 sm:mr-4 ${!!selectedSchedule && 'hidden'}`}
           schedules={schedules}
@@ -91,7 +102,7 @@ function App() {
             {filteredLogs.map(log => <LogBox key={log.id} log={log} />)}
           </div>
         </div>}
-      </div>
+      </div> : <div>No schedules found. Check the console and make sure you are connecting to the correct API</div>}
     </div>
   );
 }
