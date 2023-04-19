@@ -2,6 +2,8 @@
 
 A web app to manage schedules and their corresponding logs.
 
+Check live version here: https://blue-prism-test-nine.vercel.app/
+
 
 ## Installation
 
